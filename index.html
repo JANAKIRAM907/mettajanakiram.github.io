@@ -1007,10 +1007,29 @@ footer {
   .journey-divider { display: none; }
 }
 @media (max-width: 600px) {
-  nav { padding: 1rem 5%; }
-  .nav-links { gap: 1.5rem; }
-  section { padding: 80px 5%; }
-  .photo-card, .photo-frame { width: 260px; }
+  nav { padding: 1rem 4%; }
+  .nav-links { gap: 1rem; }
+  .nav-links a { font-size: 0.68rem; letter-spacing: 0.08em; }
+  section { padding: 70px 4%; }
+  .hero { padding: 110px 4% 60px; }
+  .photo-card, .photo-frame { width: 220px; }
+  .hero-name { font-size: clamp(2.4rem, 10vw, 3.5rem); overflow-wrap: break-word; word-break: break-word; }
+  .hero-bio { font-size: 0.92rem; }
+  .cta-row { flex-wrap: wrap; gap: 0.8rem; }
+  .btn-acid, .btn-ghost { font-size: 0.75rem; padding: 0.7rem 1.2rem; }
+  .sec-heading { font-size: clamp(1.8rem, 7vw, 2.5rem); }
+  .j-card { padding: 1.2rem; }
+  .skill-grid { grid-template-columns: repeat(2, 1fr); }
+  footer { flex-direction: column; text-align: center; }
+  .footer-socials { justify-content: center; flex-wrap: wrap; gap: 1rem; }
+  .contact-inner { padding: 2rem 1.2rem; }
+  .contact-links { flex-direction: column; align-items: center; }
+}
+@media (max-width: 380px) {
+  .hero-name { font-size: clamp(2rem, 11vw, 2.8rem); }
+  .nav-links { gap: 0.7rem; }
+  .nav-links a { font-size: 0.62rem; }
+  .photo-card, .photo-frame { width: 180px; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
