@@ -746,6 +746,308 @@ section {
   transform: rotate(45deg);
 }
 
+/* ─── SHOWCASE PROJECTS (left/right layout) ──────────── */
+#showcase { background: var(--ink); }
+
+.showcase-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+}
+
+.showcase-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+.showcase-item.reverse { direction: rtl; }
+.showcase-item.reverse > * { direction: ltr; }
+
+/* ── Left: project info ── */
+.showcase-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.showcase-num {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: rgba(200,255,0,0.35);
+  letter-spacing: 0.18em;
+}
+.showcase-title {
+  font-family: var(--sans);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+.showcase-desc {
+  font-size: 0.93rem;
+  line-height: 1.8;
+  color: var(--muted);
+  max-width: 46ch;
+}
+.showcase-highlights {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.showcase-highlights li {
+  font-size: 0.85rem;
+  color: var(--dim);
+  line-height: 1.55;
+  padding-left: 1.1rem;
+  position: relative;
+}
+.showcase-highlights li::before {
+  content: '▸';
+  position: absolute; left: 0;
+  color: var(--acid);
+  font-size: 0.7rem;
+}
+.showcase-stack {
+  display: flex; flex-wrap: wrap; gap: 0.4rem;
+}
+.showcase-stack span {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0.28rem 0.65rem;
+  border-radius: 4px;
+  background: rgba(200,255,0,0.06);
+  color: rgba(200,255,0,0.75);
+  border: 1px solid rgba(200,255,0,0.14);
+  letter-spacing: 0.06em;
+}
+.showcase-btns {
+  display: flex; gap: 0.8rem; flex-wrap: wrap;
+  margin-top: 0.4rem;
+}
+.btn-demo {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.7rem 1.4rem;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ink);
+  background: var(--acid);
+  border-radius: var(--r);
+  transition: box-shadow 0.25s, transform 0.2s;
+}
+.btn-demo:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 28px rgba(200,255,0,0.45);
+}
+.btn-gh {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.7rem 1.4rem;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--white);
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: var(--r);
+  transition: border-color 0.2s, color 0.2s, transform 0.2s;
+}
+.btn-gh:hover { border-color: var(--acid); color: var(--acid); transform: translateY(-3px); }
+
+/* ── Right: animated demo window ── */
+.showcase-demo {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1.5px solid rgba(200,255,0,0.18);
+  box-shadow: 0 0 60px rgba(200,255,0,0.08), 0 24px 60px rgba(0,0,0,0.5);
+  background: #080b14;
+}
+.showcase-demo::before {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(200,255,0,0.04) 0%, transparent 60%);
+  pointer-events: none; z-index: 2;
+}
+
+/* Window chrome */
+.demo-chrome {
+  background: rgba(255,255,255,0.04);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 0.6rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.demo-chrome-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+}
+.demo-chrome-dot:nth-child(1) { background: #ff5f57; }
+.demo-chrome-dot:nth-child(2) { background: #febc2e; }
+.demo-chrome-dot:nth-child(3) { background: #28c840; }
+.demo-chrome-bar {
+  flex: 1;
+  background: rgba(255,255,255,0.06);
+  border-radius: 4px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  padding: 0 0.6rem;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  color: rgba(255,255,255,0.25);
+  letter-spacing: 0.06em;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* Animated terminal / UI inside demo */
+.demo-body {
+  padding: 1.2rem 1.4rem;
+  min-height: 280px;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  line-height: 1.7;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Typing line animation */
+.demo-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  opacity: 0;
+  transform: translateY(6px);
+  animation: lineReveal 0.4s ease forwards;
+  white-space: pre;
+}
+@keyframes lineReveal {
+  to { opacity: 1; transform: translateY(0); }
+}
+.demo-line.c-dim   { color: rgba(255,255,255,0.28); }
+.demo-line.c-acid  { color: var(--acid); }
+.demo-line.c-white { color: var(--white); }
+.demo-line.c-green { color: #4ade80; }
+.demo-line.c-blue  { color: #60a5fa; }
+.demo-line.c-red   { color: #f87171; }
+.demo-line .prompt { color: rgba(200,255,0,0.5); flex-shrink: 0; }
+
+/* Progress bar inside demo */
+.demo-progress-wrap {
+  margin: 0.6rem 0;
+  background: rgba(255,255,255,0.06);
+  border-radius: 3px;
+  height: 4px;
+  overflow: hidden;
+  opacity: 0;
+  animation: lineReveal 0.4s ease forwards;
+}
+.demo-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--acid), #00ffaa);
+  border-radius: 3px;
+  animation: fillBar 2s ease forwards;
+}
+@keyframes fillBar { from { width: 0; } to { width: 100%; } }
+
+/* Badge inside demo */
+.demo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(200,255,0,0.1);
+  border: 1px solid rgba(200,255,0,0.25);
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.62rem;
+  color: var(--acid);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.demo-badge-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--acid);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Chat bubble for RAG demo */
+.demo-chat-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  padding: 0.2rem 0;
+}
+.demo-chat-msg {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  opacity: 0;
+  animation: lineReveal 0.5s ease forwards;
+}
+.demo-chat-msg.user { flex-direction: row-reverse; }
+.demo-chat-avatar {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.6rem;
+  flex-shrink: 0;
+  font-weight: 700;
+}
+.demo-chat-avatar.ai-av {
+  background: rgba(200,255,0,0.15);
+  border: 1px solid rgba(200,255,0,0.3);
+  color: var(--acid);
+}
+.demo-chat-avatar.user-av {
+  background: rgba(96,165,250,0.15);
+  border: 1px solid rgba(96,165,250,0.3);
+  color: #60a5fa;
+}
+.demo-chat-bubble {
+  padding: 0.45rem 0.75rem;
+  border-radius: 10px;
+  font-size: 0.65rem;
+  line-height: 1.5;
+  max-width: 80%;
+}
+.demo-chat-msg.ai .demo-chat-bubble {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--muted);
+  border-bottom-left-radius: 2px;
+}
+.demo-chat-msg.user .demo-chat-bubble {
+  background: rgba(200,255,0,0.1);
+  border: 1px solid rgba(200,255,0,0.2);
+  color: var(--acid);
+  border-bottom-right-radius: 2px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .showcase-item,
+  .showcase-item.reverse {
+    grid-template-columns: 1fr;
+    direction: ltr;
+    gap: 2rem;
+  }
+  .showcase-item.reverse .showcase-demo {
+    order: -1;
+  }
+}
+
 /* ─── CERTIFICATIONS ─────────────────────────────────── */
 #certifications { background: var(--ink); }
 
@@ -1066,24 +1368,9 @@ footer {
 
 /* ─── RESPONSIVE ─────────────────────────────────────── */
 @media (max-width: 1024px) {
-  .proj-grid {
-    grid-template-columns: 1fr;
-    gap: 0;
-    border: none;
-    border-radius: 0;
-    overflow: visible;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  .proj-card {
-    border-right: none;
-    border-bottom: none;
-    border: 1.5px solid rgba(255,255,255,0.08);
-    border-radius: 16px;
-    overflow: hidden;
-  }
-  .proj-card:last-child { border: 1.5px solid rgba(255,255,255,0.08); }
+  .proj-grid { grid-template-columns: 1fr; }
+  .proj-card { border-right: none; border-bottom: 1.5px solid rgba(255,255,255,0.05); }
+  .proj-card:last-child { border-bottom: none; }
 }
 @media (max-width: 900px) {
   .hero { grid-template-columns: 1fr; text-align: center; padding-top: 100px; gap: 2rem; }
@@ -1133,25 +1420,6 @@ footer {
   .photo-card .photo-main {
     object-position: center 10%;
   }
-  /* On mobile, reduce overlay so face isn't darkened too much */
-  .photo-overlay {
-    background:
-      linear-gradient(to top, rgba(5,6,10,0.92) 0%, rgba(5,6,10,0.05) 30%, transparent 50%),
-      linear-gradient(to bottom, rgba(5,6,10,0.15) 0%, transparent 15%);
-  }
-  /* Name badge: ensure it sits cleanly at the bottom, not overlapping face */
-  .photo-badge {
-    padding: 1rem 1rem 1rem;
-  }
-  .photo-badge-name {
-    font-size: 1.1rem;
-  }
-  .photo-badge-title {
-    font-size: 0.6rem;
-  }
-  .photo-badge-loc {
-    font-size: 0.58rem;
-  }
 
   /* ── STATS STRIP: never cut off ── */
   .photo-stats {
@@ -1187,14 +1455,6 @@ footer {
   .photo-frame { width: min(72vw, 240px); }
   .photo-card { width: 100%; aspect-ratio: 3/4; }
   .photo-stats { width: min(72vw, 240px); }
-
-  .photo-overlay {
-    background:
-      linear-gradient(to top, rgba(5,6,10,0.92) 0%, rgba(5,6,10,0.05) 28%, transparent 48%),
-      linear-gradient(to bottom, rgba(5,6,10,0.15) 0%, transparent 15%);
-  }
-  .photo-badge { padding: 0.8rem 0.8rem 0.8rem; }
-  .photo-badge-name { font-size: 1rem; }
 
   .hero-name { font-size: clamp(2.1rem, 11vw, 2.8rem); }
 }
@@ -1267,6 +1527,11 @@ footer {
 @media (max-width: 768px) {
   .mission-pillars { grid-template-columns: 1fr; }
 }
+@media (max-width: 600px) {
+  #mission { padding: 4rem 5%; }
+  #mission .sec-title { font-size: clamp(1.8rem, 7vw, 2.5rem); }
+  .mission-lead { font-size: 1.1rem; }
+}
 </style>
 </head>
 <body>
@@ -1283,6 +1548,7 @@ footer {
   <div class="nav-logo"><em>MJ</em>.dev</div>
   <ul class="nav-links">
     <li><a href="#projects">Work</a></li>
+    <li><a href="#showcase">Demo</a></li>
     <li><a href="#certifications">Certs</a></li>
     <li><a href="#journey">Journey</a></li>
     <li><a href="#skills">Skills</a></li>
@@ -1554,6 +1820,104 @@ footer {
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
       </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── SHOWCASE PROJECTS ─── -->
+<section id="showcase">
+  <span class="sec-label reveal">// Live Demos</span>
+  <h2 class="sec-title reveal reveal-delay-1">Featured Projects</h2>
+
+  <div class="showcase-list">
+
+    <!-- ── Project 1: Secure Online Test System ── -->
+    <div class="showcase-item reveal">
+
+      <!-- Left: Info -->
+      <div class="showcase-info">
+        <span class="showcase-num">SYS · 01</span>
+        <h3 class="showcase-title">Secure Online Test Platform</h3>
+        <p class="showcase-desc">A full-stack web examination system with real-time integrity monitoring, transaction logging, and adaptive anti-cheat mechanisms built with Spring Boot and React.</p>
+        <ul class="showcase-highlights">
+          <li>Secure login, test, and submission modules with Spring Security</li>
+          <li>Tab-switch detection auto-submits on suspicious activity</li>
+          <li>Real-time score calculation stored securely in MySQL</li>
+          <li>Modular REST APIs with Maven-based build pipeline</li>
+        </ul>
+        <div class="showcase-stack">
+          <span>Java</span><span>Spring Boot</span><span>React.js</span><span>MySQL</span><span>Spring Security</span><span>Maven</span>
+        </div>
+        <div class="showcase-btns">
+          <a href="https://github.com/JANAKIRAM907/secure-online-test-system" target="_blank" rel="noopener" class="btn-demo clickable">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polygon points="10,8 16,12 10,16"/></svg>
+            Live Demo
+          </a>
+          <a href="https://github.com/JANAKIRAM907/secure-online-test-system" target="_blank" rel="noopener" class="btn-gh clickable">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <!-- Right: Animated Demo -->
+      <div class="showcase-demo" id="demoExam">
+        <div class="demo-chrome">
+          <span class="demo-chrome-dot"></span>
+          <span class="demo-chrome-dot"></span>
+          <span class="demo-chrome-dot"></span>
+          <div class="demo-chrome-bar">🔒 secure-exam.app / exam/session#live</div>
+        </div>
+        <div class="demo-body" id="examBody">
+          <!-- lines injected by JS -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── Project 2: RAG AI Assistant (reversed) ── -->
+    <div class="showcase-item reverse reveal reveal-delay-1">
+
+      <!-- Left: Info (direction rtl flips it to right visually) -->
+      <div class="showcase-info">
+        <span class="showcase-num">AI · 02</span>
+        <h3 class="showcase-title">Production GenAI RAG Pipeline</h3>
+        <p class="showcase-desc">An LLM-powered document Q&A system using Retrieval-Augmented Generation, deployed on Render with context-accurate answers from custom documents.</p>
+        <ul class="showcase-highlights">
+          <li>Embeddings + semantic search with LangChain vector store</li>
+          <li>FastAPI backend serving real-time LLM responses</li>
+          <li>Context-aware answers from uploaded PDF/text documents</li>
+          <li>Fully deployed production pipeline on Render</li>
+        </ul>
+        <div class="showcase-stack">
+          <span>Python</span><span>FastAPI</span><span>LangChain</span><span>RAG</span><span>Embeddings</span><span>Render</span>
+        </div>
+        <div class="showcase-btns">
+          <a href="https://github.com/JANAKIRAM907/rag-chat-assistant" target="_blank" rel="noopener" class="btn-demo clickable">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polygon points="10,8 16,12 10,16"/></svg>
+            Live Demo
+          </a>
+          <a href="https://github.com/JANAKIRAM907/rag-chat-assistant" target="_blank" rel="noopener" class="btn-gh clickable">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <!-- Right: Animated RAG Chat Demo -->
+      <div class="showcase-demo" id="demoRAG">
+        <div class="demo-chrome">
+          <span class="demo-chrome-dot"></span>
+          <span class="demo-chrome-dot"></span>
+          <span class="demo-chrome-dot"></span>
+          <div class="demo-chrome-bar">🤖 rag-assistant.onrender.com / chat</div>
+        </div>
+        <div class="demo-body" id="ragBody">
+          <!-- lines injected by JS -->
+        </div>
+      </div>
+
     </div>
 
   </div>
@@ -1858,6 +2222,142 @@ const nav = document.getElementById('nav');
 window.addEventListener('scroll', () => {
   nav.classList.toggle('scrolled', window.scrollY > 60);
 }, { passive: true });
+
+/* ─── SHOWCASE DEMO ANIMATIONS ─── */
+function makeLine(text, cls, delay, prompt) {
+  const el = document.createElement('div');
+  el.className = 'demo-line ' + (cls || 'c-white');
+  el.style.animationDelay = delay + 's';
+  if (prompt) {
+    const p = document.createElement('span');
+    p.className = 'prompt';
+    p.textContent = prompt;
+    el.appendChild(p);
+  }
+  const t = document.createTextNode(text);
+  el.appendChild(t);
+  return el;
+}
+
+function makeProgress(delay) {
+  const wrap = document.createElement('div');
+  wrap.className = 'demo-progress-wrap';
+  wrap.style.animationDelay = delay + 's';
+  const fill = document.createElement('div');
+  fill.className = 'demo-progress-fill';
+  fill.style.animationDelay = delay + 's';
+  wrap.appendChild(fill);
+  return wrap;
+}
+
+function makeBadge(text, delay) {
+  const wrap = document.createElement('div');
+  wrap.className = 'demo-line';
+  wrap.style.animationDelay = delay + 's';
+  const b = document.createElement('span');
+  b.className = 'demo-badge';
+  b.innerHTML = '<span class="demo-badge-dot"></span>' + text;
+  wrap.appendChild(b);
+  return wrap;
+}
+
+function buildExamDemo(container) {
+  container.innerHTML = '';
+  const lines = [
+    { text: '// Exam session initialised', cls: 'c-dim', delay: 0.1 },
+    { text: 'POST /api/auth/login', cls: 'c-acid', delay: 0.4, prompt: '$ ' },
+    { text: '{ "role": "student", "token": "eyJ…" }', cls: 'c-green', delay: 0.8 },
+    { text: '', cls: 'c-dim', delay: 1.1 },
+    { text: 'GET /api/exam/start?id=CS301', cls: 'c-acid', delay: 1.3, prompt: '$ ' },
+    { text: '200 OK — 30 questions loaded ✓', cls: 'c-green', delay: 1.7 },
+    { text: '', cls: 'c-dim', delay: 2.0 },
+    { text: '// Anti-cheat monitor active', cls: 'c-dim', delay: 2.1 },
+  ];
+  lines.forEach(l => container.appendChild(makeLine(l.text, l.cls, l.delay, l.prompt)));
+  container.appendChild(makeProgress(2.4));
+  const lines2 = [
+    { text: 'tab_switch_detected: false  ✓', cls: 'c-green', delay: 2.8 },
+    { text: 'fullscreen_active:   true   ✓', cls: 'c-green', delay: 3.1 },
+    { text: '', cls: 'c-dim', delay: 3.3 },
+    { text: 'POST /api/exam/submit', cls: 'c-acid', delay: 3.5, prompt: '$ ' },
+    { text: 'score: 92 / 100  →  MySQL ✓', cls: 'c-green', delay: 3.9 },
+    { text: '', cls: 'c-dim', delay: 4.1 },
+  ];
+  lines2.forEach(l => container.appendChild(makeLine(l.text, l.cls, l.delay, l.prompt)));
+  container.appendChild(makeBadge('Exam completed successfully', 4.3));
+}
+
+function buildRAGDemo(container) {
+  container.innerHTML = '';
+  // Header status
+  const hdr = document.createElement('div');
+  hdr.style.cssText = 'display:flex;align-items:center;justify-content:space-between;margin-bottom:0.8rem;opacity:0;animation:lineReveal 0.4s 0.1s ease forwards';
+  hdr.innerHTML = '<span style="font-size:0.65rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em">RAG ASSISTANT · ONLINE</span><span class="demo-badge"><span class="demo-badge-dot"></span>Render · Live</span>';
+  container.appendChild(hdr);
+
+  // Chat wrap
+  const chat = document.createElement('div');
+  chat.className = 'demo-chat-wrap';
+
+  const msgs = [
+    { role: 'ai',   text: 'Hi! Ask me anything about your documents 📄', delay: 0.3 },
+    { role: 'user', text: 'What is the refund policy?', delay: 0.9 },
+    { role: 'ai',   text: '🔍 Searching knowledge base…', delay: 1.5, dim: true },
+    { role: 'ai',   text: 'Based on your docs: refunds are processed within 7 business days. [Source: policy.pdf, p.3]', delay: 2.4 },
+    { role: 'user', text: 'Summarise section 2', delay: 3.2 },
+    { role: 'ai',   text: '📌 Section 2 covers onboarding steps: account setup, KYC verification, and initial deposit limits.', delay: 4.0 },
+  ];
+
+  msgs.forEach(m => {
+    const msg = document.createElement('div');
+    msg.className = 'demo-chat-msg ' + m.role;
+    msg.style.animationDelay = m.delay + 's';
+
+    const av = document.createElement('div');
+    av.className = 'demo-chat-avatar ' + (m.role === 'ai' ? 'ai-av' : 'user-av');
+    av.textContent = m.role === 'ai' ? 'AI' : 'U';
+
+    const bubble = document.createElement('div');
+    bubble.className = 'demo-chat-bubble';
+    if (m.dim) bubble.style.color = 'rgba(255,255,255,0.35)';
+    bubble.textContent = m.text;
+
+    msg.appendChild(av);
+    msg.appendChild(bubble);
+    chat.appendChild(msg);
+  });
+
+  container.appendChild(chat);
+
+  // Progress bar
+  container.appendChild(makeProgress(1.5));
+}
+
+// Trigger demos when they scroll into view
+const examEl = document.getElementById('examBody');
+const ragEl  = document.getElementById('ragBody');
+let examDone = false, ragDone = false;
+
+const demoObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      if (e.target.id === 'demoExam' && !examDone) {
+        examDone = true;
+        buildExamDemo(examEl);
+        // Loop every 7s
+        setInterval(() => buildExamDemo(examEl), 7000);
+      }
+      if (e.target.id === 'demoRAG' && !ragDone) {
+        ragDone = true;
+        buildRAGDemo(ragEl);
+        setInterval(() => buildRAGDemo(ragEl), 8000);
+      }
+    }
+  });
+}, { threshold: 0.3 });
+
+if (document.getElementById('demoExam')) demoObs.observe(document.getElementById('demoExam'));
+if (document.getElementById('demoRAG'))  demoObs.observe(document.getElementById('demoRAG'));
 
 /* ─── REVEAL ON SCROLL ─── */
 const revealObs = new IntersectionObserver((entries) => {
