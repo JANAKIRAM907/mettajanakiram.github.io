@@ -536,21 +536,84 @@ section {
   gap: 1.2rem;
   position: relative;
   cursor: none;
-  transition: background 0.3s;
+  transition: background 0.3s, transform 0.35s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.35s ease;
   min-height: 320px;
   border-right: 1.5px solid rgba(255,255,255,0.05);
+  overflow: hidden;
 }
 .proj-card:last-child { border-right: none; }
-.proj-card:hover { background: rgba(24,28,44,0.95); }
+.proj-card:hover {
+  background: rgba(24,28,44,0.97);
+  transform: translateY(-6px);
+  box-shadow: 0 16px 48px rgba(200,255,0,0.13), 0 4px 16px rgba(0,0,0,0.4);
+}
 
+/* Top green glow bar */
 .proj-card::before {
   content: '';
   position: absolute; top: 0; left: 0; right: 0; height: 2px;
   background: linear-gradient(90deg, var(--acid), rgba(200,255,0,0));
   transform: scaleX(0); transform-origin: left;
   transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
+  z-index: 2;
 }
 .proj-card:hover::before { transform: scaleX(1); }
+
+/* Shimmer sweep */
+.proj-card::after {
+  content: '';
+  position: absolute; top: 0; left: -75%; width: 50%; height: 100%;
+  background: linear-gradient(105deg, transparent 40%, rgba(200,255,0,0.06) 50%, transparent 60%);
+  transition: left 0.6s ease;
+  pointer-events: none; z-index: 1;
+}
+.proj-card:hover::after { left: 125%; }
+
+/* Bottom glow line */
+.proj-card .proj-bottom-glow {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(200,255,0,0.4), transparent);
+  opacity: 0; transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+.proj-card:hover .proj-bottom-glow { opacity: 1; }
+
+/* Demo mockup preview */
+.proj-demo {
+  border-radius: 6px;
+  overflow: hidden;
+  background: rgba(5,6,10,0.8);
+  border: 1px solid rgba(200,255,0,0.1);
+  margin: 0.4rem 0;
+  flex-shrink: 0;
+}
+.proj-demo-bar {
+  background: rgba(255,255,255,0.04);
+  padding: 0.3rem 0.5rem;
+  display: flex; align-items: center; gap: 0.3rem;
+}
+.proj-demo-dot { width: 6px; height: 6px; border-radius: 50%; }
+.proj-demo-dot:nth-child(1) { background: #ff5f57; }
+.proj-demo-dot:nth-child(2) { background: #febc2e; }
+.proj-demo-dot:nth-child(3) { background: #28c840; }
+.proj-demo-screen {
+  padding: 0.6rem 0.7rem;
+  font-family: var(--mono);
+  font-size: 0.63rem;
+  line-height: 1.6;
+  color: var(--muted);
+  min-height: 70px;
+}
+.proj-demo-screen .demo-line-acid { color: var(--acid); }
+.proj-demo-screen .demo-line-dim { color: rgba(255,255,255,0.25); }
+.proj-demo-screen .demo-cursor {
+  display: inline-block;
+  width: 6px; height: 0.85em;
+  background: var(--acid);
+  animation: blink 1s step-end infinite;
+  vertical-align: text-bottom;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
 .proj-num {
   font-family: var(--mono);
@@ -567,7 +630,14 @@ section {
   transition: filter 0.3s, transform 0.3s;
   margin-top: auto;
 }
-.proj-card:hover .proj-icon { filter: grayscale(0); transform: scale(1.15) rotate(-5deg); }
+.proj-card:hover .proj-icon {
+  filter: grayscale(0);
+  animation: float-icon 1.8s ease-in-out infinite;
+}
+@keyframes float-icon {
+  0%, 100% { transform: translateY(0) scale(1.12) rotate(-5deg); }
+  50% { transform: translateY(-7px) scale(1.15) rotate(-3deg); }
+}
 
 .proj-title {
   font-family: var(--sans);
@@ -996,9 +1066,24 @@ footer {
 
 /* ─── RESPONSIVE ─────────────────────────────────────── */
 @media (max-width: 1024px) {
-  .proj-grid { grid-template-columns: 1fr; }
-  .proj-card { border-right: none; border-bottom: 1.5px solid rgba(255,255,255,0.05); }
-  .proj-card:last-child { border-bottom: none; }
+  .proj-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+    border: none;
+    border-radius: 0;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .proj-card {
+    border-right: none;
+    border-bottom: none;
+    border: 1.5px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .proj-card:last-child { border: 1.5px solid rgba(255,255,255,0.08); }
 }
 @media (max-width: 900px) {
   .hero { grid-template-columns: 1fr; text-align: center; padding-top: 100px; gap: 2rem; }
@@ -1048,6 +1133,25 @@ footer {
   .photo-card .photo-main {
     object-position: center 10%;
   }
+  /* On mobile, reduce overlay so face isn't darkened too much */
+  .photo-overlay {
+    background:
+      linear-gradient(to top, rgba(5,6,10,0.92) 0%, rgba(5,6,10,0.05) 30%, transparent 50%),
+      linear-gradient(to bottom, rgba(5,6,10,0.15) 0%, transparent 15%);
+  }
+  /* Name badge: ensure it sits cleanly at the bottom, not overlapping face */
+  .photo-badge {
+    padding: 1rem 1rem 1rem;
+  }
+  .photo-badge-name {
+    font-size: 1.1rem;
+  }
+  .photo-badge-title {
+    font-size: 0.6rem;
+  }
+  .photo-badge-loc {
+    font-size: 0.58rem;
+  }
 
   /* ── STATS STRIP: never cut off ── */
   .photo-stats {
@@ -1084,10 +1188,84 @@ footer {
   .photo-card { width: 100%; aspect-ratio: 3/4; }
   .photo-stats { width: min(72vw, 240px); }
 
+  .photo-overlay {
+    background:
+      linear-gradient(to top, rgba(5,6,10,0.92) 0%, rgba(5,6,10,0.05) 28%, transparent 48%),
+      linear-gradient(to bottom, rgba(5,6,10,0.15) 0%, transparent 15%);
+  }
+  .photo-badge { padding: 0.8rem 0.8rem 0.8rem; }
+  .photo-badge-name { font-size: 1rem; }
+
   .hero-name { font-size: clamp(2.1rem, 11vw, 2.8rem); }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ─── MISSION SECTION ─── */
+#mission {
+  padding: 6rem 6%;
+  background: var(--off);
+}
+.mission-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  margin-top: 2.5rem;
+}
+.mission-lead {
+  font-family: var(--sans);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.4;
+  margin-bottom: 1rem;
+}
+.mission-lead em {
+  font-style: normal;
+  color: var(--acid);
+}
+.mission-body {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--muted);
+  max-width: 62ch;
+}
+.mission-pillars {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.mission-pillar {
+  background: rgba(14,17,32,0.8);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-top: 2px solid rgba(200,255,0,0.3);
+  padding: 1.5rem;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+.mission-pillar:hover {
+  border-top-color: var(--acid);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(200,255,0,0.08);
+}
+.pillar-icon { font-size: 1.6rem; }
+.pillar-title {
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--white);
+}
+.pillar-text {
+  font-size: 0.83rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+@media (max-width: 768px) {
+  .mission-pillars { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -1274,6 +1452,15 @@ footer {
     <div class="proj-card reveal">
       <span class="proj-num">SYS · 01</span>
       <span class="proj-icon">🔐</span>
+      <div class="proj-demo">
+        <div class="proj-demo-bar"><span class="proj-demo-dot"></span><span class="proj-demo-dot"></span><span class="proj-demo-dot"></span></div>
+        <div class="proj-demo-screen">
+          <div class="demo-line-dim">// Exam session active</div>
+          <div><span class="demo-line-acid">POST</span> /api/submit-exam <span class="demo-line-acid">200 OK</span></div>
+          <div class="demo-line-dim">tab_switch_detected: false</div>
+          <div><span class="demo-line-acid">score:</span> 92/100 → MySQL ✓ <span class="demo-cursor"></span></div>
+        </div>
+      </div>
       <h3 class="proj-title">Secure Online Test Platform</h3>
       <p class="proj-desc">A full-stack web examination system with real-time integrity monitoring, transaction logging, and adaptive anti-cheat mechanisms.</p>
       <ul class="proj-highlights">
@@ -1285,6 +1472,7 @@ footer {
       <div class="proj-stack">
         <span>Java</span><span>Spring Boot</span><span>React.js</span><span>MySQL</span><span>REST API</span>
       </div>
+      <div class="proj-bottom-glow"></div>
       <div class="proj-footer">
         <a href="https://github.com/JANAKIRAM907/secure-online-test-system" target="_blank" rel="noopener" class="proj-github-link clickable">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
@@ -1300,6 +1488,15 @@ footer {
     <div class="proj-card reveal reveal-delay-1">
       <span class="proj-num">AI · 02</span>
       <span class="proj-icon">🤖</span>
+      <div class="proj-demo">
+        <div class="proj-demo-bar"><span class="proj-demo-dot"></span><span class="proj-demo-dot"></span><span class="proj-demo-dot"></span></div>
+        <div class="proj-demo-screen">
+          <div class="demo-line-dim">// RAG assistant ready</div>
+          <div><span class="demo-line-acid">&gt;</span> What is the refund policy?</div>
+          <div class="demo-line-dim">Retrieving context… [3 chunks]</div>
+          <div><span class="demo-line-acid">AI:</span> Based on docs… <span class="demo-cursor"></span></div>
+        </div>
+      </div>
       <h3 class="proj-title">Production GenAI RAG Pipeline</h3>
       <p class="proj-desc">An LLM-powered document Q&A system using Retrieval-Augmented Generation, deployed on Render with context-accurate answers.</p>
       <ul class="proj-highlights">
@@ -1311,6 +1508,7 @@ footer {
       <div class="proj-stack">
         <span>Python</span><span>FastAPI</span><span>LangChain</span><span>RAG</span><span>Render</span>
       </div>
+      <div class="proj-bottom-glow"></div>
       <div class="proj-footer">
         <a href="https://github.com/JANAKIRAM907/rag-chat-assistant" target="_blank" rel="noopener" class="proj-github-link clickable">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
@@ -1326,6 +1524,15 @@ footer {
     <div class="proj-card reveal reveal-delay-2">
       <span class="proj-num">RF · 03</span>
       <span class="proj-icon">📡</span>
+      <div class="proj-demo">
+        <div class="proj-demo-bar"><span class="proj-demo-dot"></span><span class="proj-demo-dot"></span><span class="proj-demo-dot"></span></div>
+        <div class="proj-demo-screen">
+          <div class="demo-line-dim">// HFSS simulation</div>
+          <div><span class="demo-line-acid">S11</span> @ 3.5 GHz: <span class="demo-line-acid">-28.4 dB</span></div>
+          <div class="demo-line-dim">BW: 480 MHz · Gain: 4.2 dBi</div>
+          <div>Parametric sweep: <span class="demo-line-acid">PASS</span> <span class="demo-cursor"></span></div>
+        </div>
+      </div>
       <h3 class="proj-title">I-Shaped Slot Antenna Design</h3>
       <p class="proj-desc">Electromagnetic simulation project optimizing return loss and bandwidth via parametric sweeps in Ansys HFSS.</p>
       <ul class="proj-highlights">
@@ -1337,6 +1544,7 @@ footer {
       <div class="proj-stack">
         <span>Ansys HFSS</span><span>RF Modeling</span><span>Simulation</span><span>ECE</span>
       </div>
+      <div class="proj-bottom-glow"></div>
       <div class="proj-footer">
         <a href="https://github.com/JANAKIRAM907/I-Shaped-Slot-Antenna" target="_blank" rel="noopener" class="proj-github-link clickable">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
@@ -1488,6 +1696,36 @@ footer {
 </section>
 
 <!-- ─── CONTACT ─── -->
+
+<!-- ─── MY MISSION WITH AGENTIC AI ─── -->
+<section id="mission">
+  <span class="sec-label reveal">// Philosophy</span>
+  <h2 class="sec-title reveal reveal-delay-1">My Mission with Agentic AI</h2>
+  <div class="mission-inner reveal reveal-delay-2">
+    <div class="mission-statement">
+      <p class="mission-lead">I believe the next frontier isn't just building AI — it's building AI that <em>acts</em>.</p>
+      <p class="mission-body">Agentic AI systems that reason, plan, and execute autonomously will reshape how humans and machines collaborate. My goal is to be at that frontier — engineering production-grade AI pipelines that don't just answer questions, but solve real problems end-to-end.</p>
+    </div>
+    <div class="mission-pillars">
+      <div class="mission-pillar">
+        <span class="pillar-icon">🧠</span>
+        <h4 class="pillar-title">Reasoning Systems</h4>
+        <p class="pillar-text">Building LLM-powered agents with memory, planning, and multi-step task execution.</p>
+      </div>
+      <div class="mission-pillar">
+        <span class="pillar-icon">⚙️</span>
+        <h4 class="pillar-title">Production AI</h4>
+        <p class="pillar-text">Deploying reliable, scalable AI backends — not just prototypes, but real-world pipelines.</p>
+      </div>
+      <div class="mission-pillar">
+        <span class="pillar-icon">🔗</span>
+        <h4 class="pillar-title">Human-AI Loop</h4>
+        <p class="pillar-text">Designing systems where human intent and AI capability amplify each other seamlessly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="contact">
   <div class="contact-inner">
     <h2 class="contact-tagline reveal">
